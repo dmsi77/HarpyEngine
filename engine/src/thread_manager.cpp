@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "application.hpp"
-#include "thread_pool.hpp"
+#include "thread_manager.hpp"
 #include "buffer.hpp"
 
 namespace realware

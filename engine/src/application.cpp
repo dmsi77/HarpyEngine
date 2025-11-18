@@ -15,7 +15,7 @@
 #include "texture_manager.hpp"
 #include "memory_pool.hpp"
 #include "event_manager.hpp"
-#include "thread_pool.hpp"
+#include "thread_manager.hpp"
 #include "log.hpp"
 
 using namespace types;
