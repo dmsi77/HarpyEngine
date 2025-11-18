@@ -10,9 +10,9 @@ namespace realware
 
     namespace utils
     {
-        cThreadPool::cThreadPool(types::usize threadCount) : _stop(K_FALSE)
+        cThreadPool::cThreadPool(usize threadCount) : _stop(K_FALSE)
         {
-            for (types::usize i = 0; i < threadCount; ++i)
+            for (usize i = 0; i < threadCount; ++i)
             {
                 _threads.emplace_back([this] {
                     while (K_TRUE)
