@@ -14,28 +14,13 @@ namespace realware
 
     namespace utils
     {
-        cTask::cTask(const cBuffer* const data, const TaskFunction& function) : _data((cBuffer*)data), _function(function)
+        cTask::cTask(const cBuffer* const data, TaskFunction&& function) : _data((cBuffer*)data), _function(std::make_shared<TaskFunction>(std::move(function)))
         {
-        }
-
-        cTask::cTask(cTask&& task) noexcept : _data(task.GetData()), _function(std::move(task.GetFunction()))
-        {
-        }
-
-        cTask& cTask::operator=(cTask&& task) noexcept
-        {
-            if (this != &task)
-            {
-                _data = task.GetData();
-                _function = std::move(task.GetFunction());
-            }
-
-            return *this;
         }
 
         void cTask::Run()
         {
-            _function(_data);
+            _function->operator()(_data);
         }
 
         mThread::mThread(const cApplication* const app, const usize threadCount) : _app((cApplication*)app), _stop(K_FALSE)
@@ -45,6 +30,9 @@ namespace realware
                 _threads.emplace_back([this] {
                     while (K_TRUE)
                     {
+                        if (_pause.load() == K_TRUE)
+                            continue;
+
                         cTask task;
                         {
                             std::unique_lock<std::mutex> lock(_mtx);
@@ -53,7 +41,7 @@ namespace realware
                             });
                             if (_stop && _tasks.empty())
                                 return;
-                            task = std::move(_tasks.front());
+                            task = _tasks.front();
                             _tasks.pop();
                         }
                         task.Run();
@@ -72,11 +60,21 @@ namespace realware
                 thread.join();
         }
 
+        void mThread::Pause()
+        {
+            _pause.store(K_TRUE);
+        }
+
+        void mThread::Resume()
+        {
+            _pause.store(K_FALSE);
+        }
+
         void mThread::Submit(cTask& task)
         {
             {
                 std::unique_lock<std::mutex> lock(_mtx);
-                _tasks.emplace(std::move(task));
+                _tasks.emplace(task);
             }
 
             _cv.notify_one();

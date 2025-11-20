@@ -6,6 +6,8 @@
 #include <queue>
 #include <functional>
 #include <mutex>
+#include <memory>
+#include <atomic>
 #include "types.hpp"
 
 namespace realware
@@ -25,18 +27,16 @@ namespace realware
         {
         public:
             cTask() = default;
-            explicit cTask(const cBuffer* const data, const TaskFunction& function);
-            explicit cTask(cTask&& task) noexcept;
-            cTask& operator=(cTask&& task) noexcept;
+            explicit cTask(const cBuffer* const data, TaskFunction&& function);
             ~cTask() = default;
 
             void Run();
             inline cBuffer* GetData() { return _data; }
-            inline TaskFunction GetFunction() { return _function; }
+            inline std::shared_ptr<TaskFunction> GetFunction() { return _function; }
 
         private:
             cBuffer* _data = nullptr;
-            TaskFunction _function;
+            std::shared_ptr<TaskFunction> _function;
         };
 
         class mThread
@@ -46,6 +46,8 @@ namespace realware
             ~mThread();
             
             void Submit(cTask& task);
+            void Pause();
+            void Resume();
             void Stop();
 
         private:
@@ -54,6 +56,7 @@ namespace realware
             std::queue<cTask> _tasks = {};
             std::mutex _mtx;
             std::condition_variable _cv;
+            std::atomic<types::boolean> _pause = types::K_FALSE;
             types::boolean _stop = types::K_FALSE;
         };
     }
