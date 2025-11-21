@@ -27,8 +27,8 @@ namespace realware
 
         inline cGameObject* GetCameraGameObject() const { return _cameraGameObject; }
         inline glm::mat4 GetViewProjectionMatrix() const { return _viewProjection; }
-        inline float GetMouseSensitivity() const { return _mouseSensitivity; }
-        inline float GetMoveSpeed() const { return _moveSpeed; }
+        inline types::f32 GetMouseSensitivity() const { return _mouseSensitivity; }
+        inline types::f32 GetMoveSpeed() const { return _moveSpeed; }
 
         inline void SetMouseSensitivity(const types::f32 value) { _mouseSensitivity = value; }
         inline void SetMoveSpeed(const types::f32 value) { _moveSpeed = value; }

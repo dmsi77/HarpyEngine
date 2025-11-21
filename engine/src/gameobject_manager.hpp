@@ -26,11 +26,12 @@ namespace realware
     
     class cGameObject : public cIdVecObject
     {
+        friend class mGameObject;
+
     public:
-        explicit cGameObject(const std::string& id, const cApplication* app, const cMemoryPool* const memoryPool);
+        explicit cGameObject(const std::string& id, const cApplication* const app, const cMemoryPool* const memoryPool);
         ~cGameObject() = default;
             
-        inline cApplication* GetApplication() { return _app; }
         inline std::string GetID() const { return _id; }
         inline types::boolean GetVisible() const { return _isVisible; }
         inline types::boolean GetOpaque() const { return _isOpaque; }
@@ -63,8 +64,6 @@ namespace realware
         void SetPhysicsActor(const eCategory& staticOrDynamic, const eCategory& shapeType, const cPhysicsSimulationScene* const scene, const cPhysicsSubstance* const substance, const types::f32 mass);
         void SetPhysicsController(const types::f32 eyeHeight, const types::f32 height, const types::f32 radius, const glm::vec3& up, const cPhysicsSimulationScene* const scene, const cPhysicsSubstance* const substance);
 
-        friend class mGameObject;
-
     private:
         types::boolean _isVisible = types::K_TRUE;
         types::boolean _isOpaque = types::K_TRUE;
@@ -90,12 +89,12 @@ namespace realware
         cGameObject* FindGameObject(const std::string& id);
         void DestroyGameObject(const std::string& id);
 
-        inline cIdVec<cGameObject>& GetObjects() { return _gameObjects; }
+        inline cIdVec<cGameObject>& GetObjects() const { return _gameObjects; }
 
     private:
         cApplication* _app = nullptr;
         types::usize _maxGameObjectCount = 0;
         types::usize _gameObjectCount = 0;
-        cIdVec<cGameObject> _gameObjects;
+        mutable cIdVec<cGameObject> _gameObjects;
     };
 }

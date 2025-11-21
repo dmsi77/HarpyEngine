@@ -10,7 +10,7 @@ using namespace types;
 
 namespace realware
 {
-    cGameObject::cGameObject(const std::string& id, const cApplication* app, const cMemoryPool* const memoryPool) : cIdVecObject(id, app)
+    cGameObject::cGameObject(const std::string& id, const cApplication* const app, const cMemoryPool* const memoryPool) : cIdVecObject(id, app)
     {
         sTransform* pTransform = (sTransform*)(((cMemoryPool*)memoryPool)->Allocate(sizeof(sTransform)));
         _transform = new (pTransform) sTransform();

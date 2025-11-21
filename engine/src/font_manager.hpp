@@ -54,13 +54,13 @@ namespace realware
 
         sFont* CreateFontTTF(const std::string& filename, const types::usize glyphSize);
         sText* CreateText(const sFont* const font, const std::string& text);
-        void DestroyFontTTF(sFont* font);
-        void DestroyText(sText* text);
+        void DestroyFontTTF(sFont* const font);
+        void DestroyText(sText* const text);
             
-        types::f32 GetTextWidth(sFont* const font, const std::string& text);
-        types::f32 GetTextHeight(sFont* const font, const std::string& text);
-        types::usize GetCharacterCount(const std::string& text);
-        types::usize GetNewlineCount(const std::string& text);
+        types::f32 GetTextWidth(sFont* const font, const std::string& text) const;
+        types::f32 GetTextHeight(sFont* const font, const std::string& text) const;
+        types::usize GetCharacterCount(const std::string& text) const;
+        types::usize GetNewlineCount(const std::string& text) const;
 
         static constexpr types::usize K_MAX_ATLAS_WIDTH = 2048;
 

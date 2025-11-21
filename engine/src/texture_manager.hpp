@@ -49,7 +49,7 @@ namespace realware
 
         cTextureAtlasTexture CalculateNormalizedArea(const cTextureAtlasTexture& area);
 
-        sTexture* GetAtlas();
+        sTexture* GetAtlas() const;
         types::usize GetWidth() const;
         types::usize GetHeight() const;
         types::usize GetDepth() const;

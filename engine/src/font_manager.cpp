@@ -232,7 +232,7 @@ namespace realware
         return textObject;
     }
 
-    void mFont::DestroyFontTTF(sFont* font)
+    void mFont::DestroyFontTTF(sFont* const font)
     {
         auto& alphabet = font->Alphabet;
         auto atlas = font->Atlas;
@@ -250,13 +250,13 @@ namespace realware
         _app->GetMemoryPool()->Free(font);
     }
 
-    void mFont::DestroyText(sText* text)
+    void mFont::DestroyText(sText* const text)
     {
         text->~sText();
         _app->GetMemoryPool()->Free(text);
     }
 
-    f32 mFont::GetTextWidth(sFont* const font, const std::string& text)
+    f32 mFont::GetTextWidth(sFont* const font, const std::string& text) const
     {
         f32 textWidth = 0.0f;
         f32 maxTextWidth = 0.0f;
@@ -296,7 +296,7 @@ namespace realware
         return maxTextWidth;
     }
 
-    f32 mFont::GetTextHeight(sFont* font, const std::string& text)
+    f32 mFont::GetTextHeight(sFont* font, const std::string& text) const
     {
         f32 textHeight = 0.0f;
         f32 maxHeight = 0.0f;
@@ -329,12 +329,12 @@ namespace realware
         return textHeight;
     }
 
-    usize mFont::GetCharacterCount(const std::string& text)
+    usize mFont::GetCharacterCount(const std::string& text) const
     {
         return strlen(text.c_str());
     }
 
-    usize mFont::GetNewlineCount(const std::string& text)
+    usize mFont::GetNewlineCount(const std::string& text) const
     {
         usize newlineCount = 0;
         const usize charCount = strlen(text.c_str());

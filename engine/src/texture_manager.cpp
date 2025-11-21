@@ -149,7 +149,7 @@ namespace realware
         return norm;
     }
 
-    sTexture* mTexture::GetAtlas()
+    sTexture* mTexture::GetAtlas() const
     {
         return _atlas;
     }

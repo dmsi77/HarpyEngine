@@ -30,14 +30,14 @@ namespace realware
         ~cEvent() = default;
 
         void Invoke(cBuffer* const data);
-        inline cGameObject* GetReceiver() { return _receiver; }
-        inline eEventType GetType() { return _type; }
-        inline EventFunction& GetFunction() { return _function; }
+        inline cGameObject* GetReceiver() const { return _receiver; }
+        inline eEventType GetType() const { return _type; }
+        inline EventFunction& GetFunction() const { return _function; }
 
     private:
         cGameObject* _receiver = nullptr;
         eEventType _type = eEventType::NONE;
-        EventFunction _function;
+        mutable EventFunction _function;
     };
 
     class mEvent

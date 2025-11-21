@@ -64,6 +64,12 @@ namespace realware
 
     class cApplication
     {
+        friend void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+        friend void WindowFocusCallback(GLFWwindow* window, int focused);
+        friend void WindowSizeCallback(GLFWwindow* window, int width, int height);
+        friend void CursorCallback(GLFWwindow* window, double xpos, double ypos);
+        friend void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+
     public:
         enum class eMouseButton
         {
@@ -102,13 +108,7 @@ namespace realware
         inline types::boolean GetKey(int key) const { return _keys[key]; }
         inline types::boolean GetMouseKey(int key) const { return _mouseKeys[key]; }
         types::f32 GetDeltaTime() const { return _deltaTime; };
-        sApplicationDescriptor* GetDesc() { return &_desc; }
-
-        friend void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-        friend void WindowFocusCallback(GLFWwindow* window, int focused);
-        friend void WindowSizeCallback(GLFWwindow* window, int width, int height);
-        friend void CursorCallback(GLFWwindow* window, double xpos, double ypos);
-        friend void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+        sApplicationDescriptor* GetDesc() const { return &_desc; }
 
     private:
         void CreateAppWindow();
@@ -121,7 +121,7 @@ namespace realware
         void DestroyMemoryPool();
 
         inline glm::vec2 GetMonitorSize() const { return glm::vec2(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN)); }
-        inline types::boolean GetWindowFocus() { return _isFocused; }
+        inline types::boolean GetWindowFocus() const { return _isFocused; }
 
         inline void SetKey(const int key, const types::boolean value) { _keys[key] = value; }
         inline void SetMouseKey(const int key, const types::boolean value) { _mouseKeys[key] = value; }
@@ -132,7 +132,7 @@ namespace realware
         static constexpr types::usize K_KEY_BUFFER_MASK = 0xFF;
 
     protected:
-        sApplicationDescriptor _desc = {};
+        mutable sApplicationDescriptor _desc = {};
         void* _window = nullptr;
         iRenderContext* _renderContext = nullptr;
         iSoundContext* _soundContext = nullptr;
