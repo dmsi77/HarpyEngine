@@ -17,17 +17,16 @@
 #include "../../engine/src/physics_manager.hpp"
 #include "../../engine/src/gameobject_manager.hpp"
 #include "../../engine/src/event_manager.hpp"
-#include "../../engine/src/thread_pool.hpp"
+#include "../../engine/src/thread_manager.hpp"
 #include "../../engine/src/memory_pool.hpp"
+#include "../../engine/src/buffer.hpp"
 
-using namespace realware::app;
-using namespace realware::game;
-using namespace realware::render;
-using namespace realware::font;
-using namespace realware::sound;
-using namespace realware::physics;
-using namespace realware::utils;
+using namespace realware;
 using namespace types;
+
+void func(cBuffer* const data)
+{
+}
 
 class MyApp : public cApplication
 {
@@ -69,7 +68,7 @@ public:
             0,
             255
         };
-        sTextureAtlasTexture* customRenderPassTexture1 = texture->CreateTexture(
+        cTextureAtlasTexture* customRenderPassTexture1 = texture->CreateTexture(
             "CustomRenderPassTexture1",
             glm::vec2(2, 2),
             4,
@@ -96,7 +95,7 @@ public:
             255,
             255
         };
-        sTextureAtlasTexture* customRenderPassTexture2 = texture->CreateTexture(
+        cTextureAtlasTexture* customRenderPassTexture2 = texture->CreateTexture(
             "CustomRenderPassTexture2",
             glm::vec2(2, 2),
             4,
@@ -113,7 +112,7 @@ public:
         );
 
         sRenderPass::sDescriptor renderPassDesc;
-        renderPassDesc.InputVertexFormat = Category::VERTEX_BUFFER_FORMAT_POS_TEX_NRM_VEC3_VEC2_VEC3;
+        renderPassDesc.InputVertexFormat = eCategory::VERTEX_BUFFER_FORMAT_POS_TEX_NRM_VEC3_VEC2_VEC3;
         renderPassDesc.InputBuffers.emplace_back(render->GetVertexBuffer());
         renderPassDesc.InputBuffers.emplace_back(render->GetIndexBuffer());
         renderPassDesc.InputBuffers.emplace_back(render->GetOpaqueInstanceBuffer());
@@ -127,7 +126,7 @@ public:
         renderPassDesc.InputTextureAtlasTextureNames.emplace_back("MyRedTexture");
         renderPassDesc.InputTextureAtlasTextureNames.emplace_back("MyWhiteTexture");
         renderPassDesc.ShaderBase = nullptr;
-        renderPassDesc.ShaderRenderPath = Category::RENDER_PATH_OPAQUE;
+        renderPassDesc.ShaderRenderPath = eCategory::RENDER_PATH_OPAQUE;
         renderPassDesc.ShaderVertexPath = "C:/DDD/RealWare/out/build/x64-Debug/samples/Sample01/data/shaders/main_vertex.shader";
         renderPassDesc.ShaderFragmentPath = "C:/DDD/RealWare/out/build/x64-Debug/samples/Sample01/data/shaders/main_fragment.shader";
         renderPassDesc.RenderTarget = opaqueRenderPass->Desc.RenderTarget;
@@ -147,7 +146,7 @@ public:
         _customRenderPass = CreateCustomRenderPass();
 
         // Triangle geometry
-        _trianglePrimitive = _render->CreatePrimitive(Category::PRIMITIVE_TRIANGLE);
+        _trianglePrimitive = _render->CreatePrimitive(eCategory::PRIMITIVE_TRIANGLE);
         _triangleGeometry = _render->CreateGeometry(
             _trianglePrimitive->Format,
             _trianglePrimitive->VerticesByteSize,
@@ -155,7 +154,7 @@ public:
             _trianglePrimitive->IndicesByteSize,
             _trianglePrimitive->Indices
         );
-        _quadPrimitive = _render->CreatePrimitive(Category::PRIMITIVE_QUAD);
+        _quadPrimitive = _render->CreatePrimitive(eCategory::PRIMITIVE_QUAD);
         _quadGeometry = _render->CreateGeometry(
             _quadPrimitive->Format,
             _quadPrimitive->VerticesByteSize,
@@ -175,23 +174,23 @@ public:
         );
 
         // Textures
-        sTextureAtlasTexture* texture1 = _texture->CreateTexture(
+        cTextureAtlasTexture* texture1 = _texture->CreateTexture(
             "Texture1",
             "C:/DDD/RealWare/resources/texture1.png"
         );
-        sTextureAtlasTexture* texture2 = _texture->CreateTexture(
+        cTextureAtlasTexture* texture2 = _texture->CreateTexture(
             "Texture2",
             "C:/DDD/RealWare/resources/texture2.png"
         );
 
         // Materials
-        sMaterial* material1 = _render->CreateMaterial(
+        cMaterial* material1 = _render->CreateMaterial(
             "Material1",
             texture1,
             glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
             glm::vec4(1.0f)
         );
-        sMaterial* material2 = _render->CreateMaterial(
+        cMaterial* material2 = _render->CreateMaterial(
             "Material2",
             texture2,
             glm::vec4(1.0f, 0.0f, 0.0f, 0.5f),
@@ -203,8 +202,8 @@ public:
         sText* text = _font->CreateText(font, "New line\ntest\nanother newline\there");
 
         // Physics
-        sSimulationScene* pxScene = _physics->CreateScene("PXScene1");
-        sSubstance* pxSubstance = _physics->CreateSubstance("PXSubstance1");
+        cPhysicsSimulationScene* pxScene = _physics->CreateScene("PXScene1");
+        cPhysicsSubstance* pxSubstance = _physics->CreateSubstance("PXSubstance1");
 
         // Game objects
         const usize N = 1;
@@ -221,8 +220,8 @@ public:
                     cubeObject1->SetVisible(K_TRUE);
                     cubeObject1->SetOpaque(K_TRUE);
                     cubeObject1->SetGeometry(_cubeGeometry);
-                    cubeObject1->SetPosition(position);
-                    cubeObject1->SetScale(glm::vec3(1.0f));
+                    cubeObject1->GetTransform()->Position = position;
+                    cubeObject1->GetTransform()->Scale = glm::vec3(1.0f);
                     cubeObject1->SetMaterial(material2);
                 }
             }
@@ -231,21 +230,27 @@ public:
         cGameObject* textObject = _gameObject->CreateGameObject("TextObject");
         textObject->SetVisible(K_TRUE);
         textObject->SetOpaque(K_TRUE);
-        textObject->SetPosition(glm::vec3(0.5f, 0.5f, 0.0f));
-        textObject->SetScale(glm::vec3(1.0f));
+        textObject->GetTransform()->Position = glm::vec3(0.5f, 0.5f, 0.0f);
+        textObject->GetTransform()->Scale = glm::vec3(1.0f);
         textObject->SetMaterial(material1);
         textObject->SetText(text);
         
-        cTask task(nullptr, [](cBuffer* const data) {std::cout << "Success!" << std::endl;});
-        GetThreadManager()->Submit(
-            task
-        );
+        //TaskFunction f = TaskFunction([](cBuffer* const data) {std::cout << "Success!" << std::endl;});
+        //cTask task(nullptr, std::move(f));
+        //GetThreadManager()->Submit(
+        //    task
+        //);
+
+        EventFunction ef = EventFunction([](cBuffer* const data) {std::cout << "Success KEY_PRESS!" << std::endl;});
+        cEvent e(eEvent::KEY_PRESS, std::move(ef));
+        GetEventManager()->Subscribe(textObject, e);
+        GetEventManager()->Send(eEvent::KEY_PRESS);
 
         // Create camera
         _camera->CreateCamera();
         _camera->SetMoveSpeed(5.0f);
         _cameraGameObject = _camera->GetCameraGameObject();
-        _cameraGameObject->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
+        _cameraGameObject->GetTransform()->Position = glm::vec3(0.0f, 5.0f, 0.0f);
         _cameraGameObject->SetPhysicsController(
             0.0f,
             0.51f,
@@ -256,11 +261,12 @@ public:
         );
 
         auto& gameObjects = _gameObject->GetObjects();
+        auto gameObjectsArray = gameObjects.GetObjects();
         _transparentGameObjects = new std::vector<cGameObject>();
-        for (auto& gameObject : gameObjects.GetObjects())
+        for (usize i = 0; i < gameObjects.GetObjectCount(); i++)
         {
-            if (gameObject.GetOpaque() == K_TRUE)
-                _transparentGameObjects->push_back(gameObject);
+            if (gameObjectsArray[i].GetOpaque() == K_TRUE)
+                _transparentGameObjects->push_back(gameObjectsArray[i]);
         }
         _render->WriteObjectsToOpaqueBuffers(_gameObject->GetObjects(), _customRenderPass);
 
@@ -296,8 +302,8 @@ private:
     sVertexBufferGeometry* _cubeGeometry = nullptr;
     cGameObject* _cameraGameObject = nullptr;
     sRenderPass* _customRenderPass = nullptr;
-    std::vector<cGameObject>* _transparentGameObjects;
-    std::vector<cGameObject>* _textGameObjects;
+    std::vector<cGameObject>* _transparentGameObjects = {};
+    std::vector<cGameObject>* _textGameObjects = {};
 };
 
 int main()

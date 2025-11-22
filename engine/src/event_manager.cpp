@@ -11,13 +11,13 @@ using namespace types;
 
 namespace realware
 {
-    cEvent::cEvent(eEvent type, const EventFunction& function) : _type(type), _function(function)
+    cEvent::cEvent(eEvent type, EventFunction&& function) : _type(type), _function(std::make_shared<EventFunction>(std::move(function)))
     {
     }
 
     void cEvent::Invoke(cBuffer* data)
     {
-        _function(data);
+        _function->operator()(data);
     };
 
     mEvent::mEvent(cApplication* app) : _app(app)

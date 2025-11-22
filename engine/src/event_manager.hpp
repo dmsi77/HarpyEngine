@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include <unordered_map>
 #include <functional>
@@ -27,18 +28,18 @@ namespace realware
         friend class mEvent;
 
     public:
-        cEvent(eEvent type, const EventFunction& function);
+        cEvent(eEvent type, EventFunction&& function);
         ~cEvent() = default;
 
         void Invoke(cBuffer* data);
         inline cGameObject* GetReceiver() const { return _receiver; }
         inline eEvent GetEventType() const { return _type; }
-        inline EventFunction& GetFunction() const { return _function; }
+        inline std::shared_ptr<EventFunction> GetFunction() const { return _function; }
 
     private:
         cGameObject* _receiver = nullptr;
         eEvent _type = eEvent::NONE;
-        mutable EventFunction _function;
+        mutable std::shared_ptr<EventFunction> _function;
     };
 
     class mEvent : public cObject
