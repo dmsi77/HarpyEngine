@@ -3,6 +3,7 @@
 #pragma once
 
 #include <vector>
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -15,7 +16,7 @@ namespace realware
         void* Address = nullptr;
     };
 
-    class cMemoryPool
+    class cMemoryPool : public cObject
     {
     public:
         explicit cMemoryPool(types::usize byteSize, types::usize allocs, types::usize alignment);

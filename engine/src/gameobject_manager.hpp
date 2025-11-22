@@ -7,6 +7,7 @@
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
 #include "id_vec.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -72,7 +73,7 @@ namespace realware
         cPhysicsController* _controller = nullptr;
     };
 
-    class mGameObject
+    class mGameObject : public cObject
     {
     public:
         explicit mGameObject(cApplication* app);

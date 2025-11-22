@@ -6,6 +6,7 @@
 #include <string>
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -139,7 +140,7 @@ namespace realware
         sDescriptor Desc;
     };
 
-    class iRenderContext
+    class iRenderContext : public cObject
     {
     public:
         virtual ~iRenderContext() = default;

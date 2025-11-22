@@ -7,6 +7,7 @@
 #include <AL/alc.h>
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
+#include "object.hpp"
 #include "id_vec.hpp"
 #include "types.hpp"
 
@@ -16,7 +17,7 @@ namespace realware
     class cSound;
     struct sWAVStructure;
 
-    class iSoundContext
+    class iSoundContext : public cObject
     {
     public:
         virtual ~iSoundContext() = default;

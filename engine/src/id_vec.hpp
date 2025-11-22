@@ -29,7 +29,7 @@ namespace realware
 	};
 
 	template <typename T>
-	class cIdVec
+	class cIdVec : public cObject
 	{
 	public:
 		explicit cIdVec(const cApplication* const app, const types::usize maxObjectCount);

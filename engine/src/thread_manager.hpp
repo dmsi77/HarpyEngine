@@ -8,6 +8,7 @@
 #include <mutex>
 #include <memory>
 #include <atomic>
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -17,7 +18,7 @@ namespace realware
 
     using TaskFunction = std::function<void(cBuffer* const data)>;
 
-    class cTask
+    class cTask : public cObject
     {
     public:
         cTask() = default;
@@ -33,7 +34,7 @@ namespace realware
         std::shared_ptr<TaskFunction> _function;
     };
 
-    class mThread
+    class mThread : public cObject
     {
     public:
         explicit mThread(cApplication* app, types::usize threadCount = std::thread::hardware_concurrency());

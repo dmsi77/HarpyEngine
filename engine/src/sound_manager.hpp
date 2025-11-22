@@ -6,6 +6,7 @@
 #include <string>
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
+#include "object.hpp"
 #include "id_vec.hpp"
 #include "types.hpp"
 
@@ -52,7 +53,7 @@ namespace realware
         types::u32 _buffer = 0;
     };
 
-    class mSound
+    class mSound : public cObject
     {
     public:
         mSound(cApplication* app, iSoundContext* context);

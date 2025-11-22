@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -14,7 +15,7 @@ namespace realware
         types::usize DataByteSize = 0;
     };
 
-    class mFileSystem
+    class mFileSystem : public cObject
     {
     public:
         explicit mFileSystem(cApplication* app);

@@ -6,6 +6,7 @@
 #include <vector>
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "id_vec.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -36,7 +37,7 @@ namespace realware
         types::f32 TextureLayerInfo = 0.0f;
     };
 
-    class mTexture
+    class mTexture : public cObject
     {
     public:
         explicit mTexture(cApplication* app, iRenderContext* context);

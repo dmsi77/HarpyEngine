@@ -9,6 +9,7 @@
 #include <PxPhysicsAPI.h>
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
+#include "object.hpp"
 #include "id_vec.hpp"
 #include "log.hpp"
 
@@ -132,7 +133,7 @@ namespace realware
         eCategory _type = eCategory::PHYSICS_ACTOR_DYNAMIC;
     };
 
-    class mPhysics
+    class mPhysics : public cObject
     {
     public:
         explicit mPhysics(cApplication* app);

@@ -6,6 +6,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include "../../thirdparty/glm/glm/glm.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -46,7 +47,7 @@ namespace realware
         std::string Text = "";
     };
 
-    class mFont
+    class mFont : public cObject
     {
     public:
         mFont(cApplication* app, iRenderContext* context);

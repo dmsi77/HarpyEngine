@@ -7,6 +7,7 @@
 #include <GLFW/glfw3native.h>
 #include <windows.h>
 #include <chrono>
+#include "object.hpp"
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "types.hpp"
 
@@ -62,7 +63,7 @@ namespace realware
         types::u32 MaxTextureCount = 65536;
     };
 
-    class cApplication
+    class cApplication : public cObject
     {
         friend void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
         friend void WindowFocusCallback(GLFWwindow* window, int focused);

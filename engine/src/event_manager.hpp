@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -21,7 +22,7 @@ namespace realware
 
     using EventFunction = std::function<void(cBuffer* const data)>;
 
-    class cEvent
+    class cEvent : public cObject
     {
         friend class mEvent;
 
@@ -40,7 +41,7 @@ namespace realware
         mutable EventFunction _function;
     };
 
-    class mEvent
+    class mEvent : public cObject
     {
     public:
         explicit mEvent(cApplication* app);

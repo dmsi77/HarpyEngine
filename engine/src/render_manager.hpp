@@ -8,6 +8,7 @@
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "id_vec.hpp"
 #include "category.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -142,7 +143,7 @@ namespace realware
         glm::vec4 Attenuation = glm::vec4(0.0f);
     };
 
-    class mRender
+    class mRender : public cObject
     {
     public:
         explicit mRender(cApplication* app, iRenderContext* context);

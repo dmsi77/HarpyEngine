@@ -4,6 +4,7 @@
 
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace realware
@@ -11,7 +12,7 @@ namespace realware
     class cApplication;
     class cGameObject;
 
-    class mCamera
+    class mCamera : public cObject
     {
     public:
         explicit mCamera(cApplication* app);
