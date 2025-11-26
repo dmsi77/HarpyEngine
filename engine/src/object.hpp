@@ -16,6 +16,7 @@ namespace realware
 	public:
 		using ID = std::string;
 
+	public:
 		cIdentifier(const std::string& id);
 		~cIdentifier() = default;
 
@@ -30,11 +31,9 @@ namespace realware
 	public:
 		using Name = std::string;
 
+	public:
 		cType(const std::string& name) : _name(name) {}
 		~cType() = default;
-
-		template <typename T>
-		static Name GetTypeNameDynamic() { return typeid(T).name(); }
 
 		inline const Name& GetName() const { return _name; }
 
@@ -46,6 +45,8 @@ namespace realware
 	{
 	public:
 		explicit iObject(cContext* context) : _context(context) {}
+		iObject(const iObject& rhs) = delete;
+		iObject& operator=(const iObject& rhs) = delete;
 		virtual ~iObject() = default;
 
 		virtual cType GetType() const = 0;
@@ -61,11 +62,11 @@ namespace realware
 
 	public:
 		explicit cFactoryObject(cContext* context) : iObject(context) {}
-		cFactoryObject(const cFactoryObject& rhs) = delete;
-		cFactoryObject& operator=(const cFactoryObject& rhs) = delete;
 		virtual ~cFactoryObject() = default;
 
 	protected:
+		types::boolean _occupied = types::K_FALSE;
+		types::s64 _allocatorIndex = 0;
 		cIdentifier* _identifier = nullptr;
 	};
 
@@ -92,7 +93,7 @@ namespace realware
 		{
 			if (_counter >= types::K_USIZE_MAX)
 			{
-				Print("Error: can't create object of type " + cType::GetTypeNameDynamic<T>() + "!");
+				Print("Error: can't create object of type!");
 
 				return nullptr;
 			}
