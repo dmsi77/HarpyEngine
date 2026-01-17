@@ -15,6 +15,7 @@ namespace realware
 		std::string windowTitle = "Test app";
 		types::usize windowWidth = 640;
 		types::usize windowHeight = 480;
+		types::boolean fullscreen = types::K_FALSE;
 		types::usize memoryAlignment = 64;
 		types::usize maxPhysicsSceneCount = 16;
 		types::usize maxPhysicsMaterialCount = 256;
@@ -28,7 +29,7 @@ namespace realware
 
 	public:
 		explicit cEngine(cContext* context, const sEngineCapabilities* capabilities, iApplication* app);
-		virtual ~cEngine() = default;
+		virtual ~cEngine() override final = default;
 
 		void Initialize();
 		void Run();

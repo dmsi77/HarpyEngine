@@ -21,7 +21,7 @@ using namespace types;
 
 namespace realware
 {
-	cEngine::cEngine(cContext* context, const sEngineCapabilities* capabilities, iApplication* app) : iObject(context), _capabilities(capabilities), _app(app) {}
+	cEngine::cEngine(cContext* context, const sEngineCapabilities* capabilities, iApplication* app) : cFactoryObject(context), _capabilities(capabilities), _app(app) {}
 
 	void cEngine::Initialize()
 	{
@@ -39,7 +39,7 @@ namespace realware
 		// Register subsystems
 		_context->RegisterSubsystem(this);
 		_context->RegisterSubsystem(new cGraphics(_context));
-		_context->RegisterSubsystem(new cInput(_context, _capabilities->windowTitle, _capabilities->windowWidth, _capabilities->windowHeight));
+		_context->RegisterSubsystem(new cInput(_context));
 		_context->RegisterSubsystem(new cCamera(_context));
 		_context->RegisterSubsystem(new cTextureAtlas(_context));
 		_context->RegisterSubsystem(new cFileSystem(_context));
