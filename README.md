@@ -1,8 +1,8 @@
-# RealWare
- 
+# Ghost Engine
+
 Lightweight C++11 game engine.
 
-Inspired by Urho3D, WickedEngine, HPL1 Engine, UE4.
+Inspired by Urho3D, Wicked Engine, HPL1 Engine, UE4.
 
 # Features
 - Disk file IO
