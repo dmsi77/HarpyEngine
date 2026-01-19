@@ -1,7 +1,5 @@
 # Arachne Engine
 
-![Logo](logo.png)
-
 Lightweight C++11 game engine.
 
 Inspired by Urho3D, Wicked Engine, HPL1 Engine, UE4.
