@@ -7,6 +7,7 @@
 #include "context.hpp"
 #include "memory_pool.hpp"
 #include "engine.hpp"
+#include "object.hpp"
 #include "types.hpp"
 
 namespace harpy
@@ -14,11 +15,13 @@ namespace harpy
 	class cContext;
 
 	template <typename T>
-	class cFactory
+	class cFactory : public iObject
 	{
+		HARPY_OBJECT(cFactory)
+
 	public:
-		explicit cFactory(cContext* context) = default;
-		~cFactory() = default;
+		explicit cFactory(cContext* context) : iObject(context) {}
+		virtual ~cFactory() override final = default;
 
 		template <typename... Args>
 		T* Create(Args&&... args);
