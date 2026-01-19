@@ -36,7 +36,8 @@ namespace harpy
 		void Initialize();
 		void Run();
 
-		const sEngineCapabilities* GetCapabilities() const { return _capabilities; }
+		inline const sEngineCapabilities* GetCapabilities() const { return _capabilities; }
+		inline iApplication* GetApplication() const { return _app; }
 
 	private:
 		const sEngineCapabilities* _capabilities = nullptr;

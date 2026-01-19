@@ -23,8 +23,10 @@ namespace harpy
     {
         const cInput* input = _context->GetSubsystem<cInput>();
         const cTime* time = _context->GetSubsystem<cTime>();
+        const iApplication* app = _context->GetSubsystem<cEngine>()->GetApplication();
+
         const f32 deltaTime = time->GetDeltaTime();
-        const cWindow* window = input->GetWindow();
+        const cWindow* window = app->GetWindow();
 
         if (_euler.x > glm::radians(65.0f))
             _euler.x = glm::radians(65.0f);
