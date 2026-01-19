@@ -162,7 +162,7 @@ namespace harpy
             size.x,
             size.y,
             size.z,
-            cTexture::eType::TEXTURE_2D_ARRAY,
+            cTexture::eDimension::TEXTURE_2D_ARRAY,
             cTexture::eFormat::RGBA8_MIPS,
             nullptr
         );
