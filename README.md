@@ -1,6 +1,6 @@
-# Arachne Engine
+# Ladon Engine
 
-![Arachne Engine Logo](ArachneLogo.png)
+![Ladon Engine Logo](LadonLogo.png)
 
 Lightweight C++11 game engine.
 
