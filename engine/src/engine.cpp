@@ -16,6 +16,7 @@
 #include "thread_manager.hpp"
 #include "render_context.hpp"
 #include "audio.hpp"
+#include "math.hpp"
 
 using namespace types;
 
@@ -50,6 +51,7 @@ namespace triton
 		_context->RegisterSubsystem(new cTime(_context));
 		_context->RegisterSubsystem(new cEventDispatcher(_context));
 		_context->RegisterSubsystem(new cAudio(_context));
+		_context->RegisterSubsystem(new cMath(_context));
 
 		// Create texture manager
 		cTextureAtlas* texture = _context->GetSubsystem<cTextureAtlas>();
