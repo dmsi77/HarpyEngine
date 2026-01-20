@@ -69,20 +69,6 @@ namespace triton
         types::f32 _attenuationQuadratic = 0.0f;
     };
 
-    struct sTransform
-    {
-        sTransform() = default;
-        sTransform(const cGameObject* gameObject);
-
-        void Transform();
-
-        types::boolean _use2D = types::K_FALSE;
-        glm::vec3 _position = glm::vec3(0.0f);
-        glm::vec3 _rotation = glm::vec3(0.0f);
-        glm::vec3 _scale = glm::vec3(1.0f);
-        glm::mat4 _world = glm::mat4(1.0f);
-    };
-
     class cMaterial : public iObject
     {
         TRITON_OBJECT(cMaterial)

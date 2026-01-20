@@ -27,25 +27,6 @@ using namespace types;
 
 namespace triton
 {
-    sTransform::sTransform(const cGameObject* gameObject)
-    {
-        const sTransform* transform = gameObject->GetTransform();
-
-        _use2D = gameObject->GetIs2D();
-        _position = transform->_position;
-        _rotation = transform->_rotation;
-        _scale = transform->_scale;
-    }
-
-    void sTransform::Transform()
-    {
-        const glm::quat quatX = glm::angleAxis(_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-        const glm::quat quatY = glm::angleAxis(_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-        const glm::quat quatZ = glm::angleAxis(_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-
-        _world = glm::translate(glm::mat4(1.0f), _position) * glm::toMat4(quatZ * quatY * quatX) * glm::scale(glm::mat4(1.0f), _scale);
-    }
-
     sRenderInstance::sRenderInstance(s32 materialIndex, const sTransform& transform)
     {
         _use2D = transform._use2D;
