@@ -1,8 +1,5 @@
 // camera_manager.cpp
 
-#include "../../thirdparty/glm/glm/gtc/matrix_transform.hpp"
-#include "../../thirdparty/glm/glm/gtc/quaternion.hpp"
-#include "../../thirdparty/glm/glm/gtx/quaternion.hpp"
 #include "camera_manager.hpp"
 #include "physics_manager.hpp"
 #include "graphics.hpp"
@@ -12,45 +9,44 @@
 #include "context.hpp"
 #include "time.hpp"
 #include "input.hpp"
+#include "math.hpp"
 
 using namespace types;
 
 namespace triton
 {
-    cCamera::cCamera(cContext* context) : iObject(context), _transform(_context->Create<sTransform>()) {}
+    cCamera::cCamera(cContext* context) : cComponent(context) {}
 
     void cCamera::Update()
     {
         const cInput* input = _context->GetSubsystem<cInput>();
         const cTime* time = _context->GetSubsystem<cTime>();
+        const cMath* math = _context->GetSubsystem<cMath>();
         const iApplication* app = _context->GetSubsystem<cEngine>()->GetApplication();
 
         const f32 deltaTime = time->GetDeltaTime();
         const cWindow* window = app->GetWindow();
 
-        if (_euler.x > glm::radians(65.0f))
-            _euler.x = glm::radians(65.0f);
-        else if (_euler.x < glm::radians(-65.0f))
-            _euler.x = glm::radians(-65.0f);
+        if (_euler.GetX() > math->DegreesToRadians(65.0f))
+            _euler.SetX(math->DegreesToRadians(65.0f));
+        else if (_euler.GetX() < math->DegreesToRadians(-65.0f))
+            _euler.SetX(math->DegreesToRadians(-65.0f));
 
-        const glm::quat quatX = glm::angleAxis(_euler.x, glm::vec3(1.0f, 0.0f, 0.0f));
-        const glm::quat quatY = glm::angleAxis(_euler.y, glm::vec3(0.0f, 1.0f, 0.0f));
-        const glm::quat quatZ = glm::angleAxis(_euler.z, glm::vec3(0.0f, 0.0f, 1.0f));
-        _direction = quatZ * quatY * quatX * glm::vec3(0.0f, 0.0f, -1.0f);
+        const cQuaternion quatX = cQuaternion(_euler.GetX(), cVector3(1.0f, 0.0f, 0.0f));
+        const cQuaternion quatY = cQuaternion(_euler.GetY(), cVector3(0.0f, 1.0f, 0.0f));
+        const cQuaternion quatZ = cQuaternion(_euler.GetZ(), cVector3(0.0f, 0.0f, 1.0f));
+        _direction = quatZ * quatY * quatX * cVector3(0.0f, 0.0f, -1.0f);
 
-        _view = glm::lookAtRH(_transform->_position, _transform->_position + _direction, glm::vec3(0.0f, 1.0f, 0.0f));
-        _projection = glm::perspective(glm::radians(_fov), (f32)window->GetWidth() / window->GetHeight(), _zNear, _zFar);
+        _view = cMatrix4(_transform.GetPosition(), _transform.GetPosition() + _direction, cVector3(0.0f, 1.0f, 0.0f));
+        _projection = cMatrix4(glm::radians(_fov), (f32)window->GetWidth() / window->GetHeight(), _zNear, _zFar);
         _viewProjection = _projection * _view;
 
-        f64 x = 0.0, y = 0.0;
-        glfwGetCursorPos(window->GetWindow(), &x, &y);
-
         _prevCursorPosition = _cursorPosition;
-        _cursorPosition = glm::vec2(x, y);
+        _cursorPosition = window->GetCursorPosition();
 
-        const glm::vec2 mouseDelta = _prevCursorPosition - _cursorPosition;
-        AddEuler(eCategory::CAMERA_ANGLE_PITCH, mouseDelta.y * _mouseSensitivity * deltaTime);
-        AddEuler(eCategory::CAMERA_ANGLE_YAW, mouseDelta.x * _mouseSensitivity * deltaTime);
+        const cVector2 mouseDelta = _prevCursorPosition - _cursorPosition;
+        AddEuler(eCategory::CAMERA_ANGLE_PITCH, mouseDelta.GetY() * _mouseSensitivity * deltaTime);
+        AddEuler(eCategory::CAMERA_ANGLE_YAW, mouseDelta.GetX() * _mouseSensitivity * deltaTime);
         
         const f32 forward = input->GetKey('W') * _moveSpeed * deltaTime;
         const f32 backward = input->GetKey('S') * _moveSpeed * deltaTime;
@@ -74,11 +70,11 @@ namespace triton
     void cCamera::AddEuler(eCategory angle, f32 value)
     {
         if (angle == eCategory::CAMERA_ANGLE_PITCH)
-            _euler[0] += value;
+            _euler.AddX(value);
         else if (angle == eCategory::CAMERA_ANGLE_YAW)
-            _euler[1] += value;
+            _euler.AddX(value);
         else if (angle == eCategory::CAMERA_ANGLE_ROLL)
-            _euler[2] += value;
+            _euler.AddX(value);
     }
 
     void cCamera::Move(f32 value)
