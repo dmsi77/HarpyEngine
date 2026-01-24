@@ -38,7 +38,7 @@ namespace triton
         _direction = quatZ * quatY * quatX * cVector3(0.0f, 0.0f, -1.0f);
 
         _view = cMatrix4(_transform.GetPosition(), _transform.GetPosition() + _direction, cVector3(0.0f, 1.0f, 0.0f));
-        _projection = cMatrix4(glm::radians(_fov), (f32)window->GetWidth() / window->GetHeight(), _zNear, _zFar);
+        _projection = cMatrix4(cMath::DegreesToRadians(_fov), (f32)window->GetWidth() / window->GetHeight(), _zNear, _zFar);
         _viewProjection = _projection * _view;
 
         _prevCursorPosition = _cursorPosition;
@@ -82,14 +82,15 @@ namespace triton
         cPhysics* physics = _context->GetSubsystem<cPhysics>();
         const cPhysicsController* controller = _cameraGameObject->GetPhysicsController();
         const sTransform* transform = _cameraGameObject->GetTransform();
-        const glm::vec3 position = transform->_position;
-        const glm::vec3 newPosition = transform->_position + _direction * value;
+        const cVector3& transformPosition = transform->GetPosition();
+        const cVector3 position = transformPosition;
+        const cVector3 newPosition = transformPosition + _direction * value;
         
         physics->MoveController(
             controller,
             newPosition - position
         );
-        const glm::vec3 cameraPosition = physics->GetControllerPosition(controller);
+        const cVector3 cameraPosition = physics->GetControllerPosition(controller);
 
         _cameraGameObject->GetTransform()->_position = cameraPosition;
     }
@@ -98,10 +99,11 @@ namespace triton
     {
         cPhysics* physics = _context->GetSubsystem<cPhysics>();
         const cPhysicsController* controller = _cameraGameObject->GetPhysicsController();
-        const sTransform* transform = _cameraGameObject->GetTransform();
+        const cTransform* transform = _cameraGameObject->GetTransform();
+        const cVector3& transformPosition = transform->GetPosition();
         const cVector3 right = _direction.Cross(cVector3(0.0f, 1.0f, 0.0f));
-        const cVector3 position = transform->position;
-        const cVector3 newPosition = transform->position + right * value;
+        const cVector3 position = transformPosition;
+        const cVector3 newPosition = transformPosition + right * value;
 
         physics->MoveController(
             controller,
@@ -116,9 +118,10 @@ namespace triton
     {
         cPhysics* physics = _context->GetSubsystem<cPhysics>();
         const cPhysicsController* controller = _cameraGameObject->GetPhysicsController();
-        const sTransform* transform = _cameraGameObject->GetTransform();
-        const cVector3 position = transform->position;
-        const cVector3 newPosition = transform->position + cVector3(0.0f, 1.0f, 0.0f) * value;
+        const cTransform* transform = _cameraGameObject->GetTransform();
+        const cVector3& transformPosition = transform->GetPosition();
+        const cVector3 position = transformPosition;
+        const cVector3 newPosition = transformPosition + cVector3(0.0f, 1.0f, 0.0f) * value;
 
         physics->MoveController(
             controller,

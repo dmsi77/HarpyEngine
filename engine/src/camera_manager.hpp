@@ -5,7 +5,6 @@
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
 #include "component.hpp"
-#include "transform.hpp"
 #include "math.hpp"
 #include "types.hpp"
 
