@@ -99,15 +99,15 @@ namespace triton
         cPhysics* physics = _context->GetSubsystem<cPhysics>();
         const cPhysicsController* controller = _cameraGameObject->GetPhysicsController();
         const sTransform* transform = _cameraGameObject->GetTransform();
-        const glm::vec3 right = glm::cross(_direction, glm::vec3(0.0f, 1.0f, 0.0f));
-        const glm::vec3 position = transform->_position;
-        const glm::vec3 newPosition = transform->_position + right * value;
+        const cVector3 right = _direction.Cross(cVector3(0.0f, 1.0f, 0.0f));
+        const cVector3 position = transform->position;
+        const cVector3 newPosition = transform->position + right * value;
 
         physics->MoveController(
             controller,
             newPosition - position
         );
-        const glm::vec3 cameraPosition = physics->GetControllerPosition(controller);
+        const cVector3 cameraPosition = physics->GetControllerPosition(controller);
 
         _cameraGameObject->GetTransform()->_position = cameraPosition;
     }
@@ -117,14 +117,14 @@ namespace triton
         cPhysics* physics = _context->GetSubsystem<cPhysics>();
         const cPhysicsController* controller = _cameraGameObject->GetPhysicsController();
         const sTransform* transform = _cameraGameObject->GetTransform();
-        const glm::vec3 position = transform->_position;
-        const glm::vec3 newPosition = transform->_position + glm::vec3(0.0f, 1.0f, 0.0f) * value;
+        const cVector3 position = transform->position;
+        const cVector3 newPosition = transform->position + cVector3(0.0f, 1.0f, 0.0f) * value;
 
         physics->MoveController(
             controller,
             newPosition - position
         );
-        const glm::vec3 cameraPosition = physics->GetControllerPosition(controller);
+        const cVector3 cameraPosition = physics->GetControllerPosition(controller);
 
         _cameraGameObject->GetTransform()->_position = cameraPosition;
     }
