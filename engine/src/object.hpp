@@ -7,6 +7,7 @@
 #include "log.hpp"
 #include "event_types.hpp"
 #include "memory_pool.hpp"
+#include "tag.hpp"
 #include "types.hpp"
 
 namespace triton
@@ -25,22 +26,7 @@ namespace triton
 	class cIdentifier
 	{
 	public:
-		static constexpr types::usize kMaxIDStringByteSize = 32;
-		using ID = std::array<types::u8, kMaxIDStringByteSize>;
-
-	public:
-		explicit cIdentifier() = default;
-		~cIdentifier() = default;
-
-		static cIdentifier Generate(const std::string& seed);
-
-		inline const ID& GetID() const { return _id; }
-
-	private:
-		explicit cIdentifier(types::usize& counter, const std::string& typeName);
-
-	private:
-		ID _id = {};
+		static cTag Generate(const std::string& seed);
 	};
 
 	class iObject;
@@ -73,7 +59,7 @@ namespace triton
 		void Send(eEventType type, cDataBuffer* data);
 
 		inline cContext* GetContext() const { return _context; }
-		inline const cIdentifier::ID& GetID() const { return _identifier->GetID(); }
+		inline const cTag& GetID() const { return _identifier->GetID(); }
 		inline cIdentifier* GetIdentifier() const { return _identifier; }
 
 	protected:

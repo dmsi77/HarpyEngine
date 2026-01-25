@@ -7,9 +7,12 @@
 namespace triton
 {
     class cContext;
-
+    class cIdentifier;
+    
     class cTag
     {
+        friend class cIdentifier;
+
     public:
         static constexpr types::usize kMaxTagByteSize = 32;
         using chars = std::array<types::u8, kMaxTagByteSize>;
