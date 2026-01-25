@@ -28,7 +28,7 @@ namespace triton
 
     void cDataFile::Open(const std::string& path, types::boolean isText)
     {
-        const sApplicationCapabilities* caps = _context->GetSubsystem<cEngine>()->GetApplication()->GetCapabilities();
+        const sCapabilities* caps = _context->GetSubsystem<cEngine>()->GetApplication()->GetCapabilities();
         auto memoryAllocator = _context->GetMemoryAllocator();
 
         if (_data)
