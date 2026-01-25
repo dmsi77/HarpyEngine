@@ -90,12 +90,12 @@ namespace triton
 
     struct sRenderInstance
     {
-        sRenderInstance(types::s32 materialIndex, const sTransform& transform);
+        sRenderInstance(types::s32 materialIndex, const cTransform& transform);
 
         types::f32 _use2D = 0.0f;
         types::s32 _materialIndex = -1;
         types::dword _pad[2] = {};
-        glm::mat4 _world = {};
+        cMatrix4 _world = cMatrix4(1.0f);
     };
 
     struct sTextInstance
@@ -124,10 +124,10 @@ namespace triton
     {
         sLightInstance(const cGameObject* object);
 
-        glm::vec4 _position = glm::vec4(0.0f);
-        glm::vec4 _color = glm::vec4(0.0f);
-        glm::vec4 _directionAndScale = glm::vec4(0.0f);
-        glm::vec4 _attenuation = glm::vec4(0.0f);
+        cVector4 _position = cVector4(0.0f);
+        cVector4 _color = cVector4(0.0f);
+        cVector4 _directionAndScale = cVector4(0.0f);
+        cVector4 _attenuation = cVector4(0.0f);
     };
 
     class cRenderPass : public iObject
@@ -172,16 +172,16 @@ namespace triton
 		explicit cGraphics(cContext* context, eAPI api);
 		virtual ~cGraphics() override final;
 
-        cMaterial* CreateMaterial(const std::string& id, cTextureAtlasTexture* diffuseTexture, const glm::vec4& diffuseColor, const glm::vec4& highlightColor, eCategory customShaderRenderPath = eCategory::RENDER_PATH_OPAQUE, const std::string& customVertexFuncPath = "", const std::string& customFragmentFuncPath = "");
+        cCacheObject<cMaterial> CreateMaterial(const std::string& id, cTextureAtlasTexture* diffuseTexture, const glm::vec4& diffuseColor, const glm::vec4& highlightColor, eCategory customShaderRenderPath = eCategory::RENDER_PATH_OPAQUE, const std::string& customVertexFuncPath = "", const std::string& customFragmentFuncPath = "");
         cVertexArray* CreateDefaultVertexArray();
         sVertexBufferGeometry* CreateGeometry(eCategory format, types::usize verticesByteSize, const void* vertices, types::usize indicesByteSize, const void* indices);
         cRenderPass* CreateRenderPass(const sRenderPassDescriptor* desc);
         sPrimitive* CreatePrimitive(eCategory primitive);
         sModel* CreateModel(const std::string& filename);
 
-        cMaterial* FindMaterial(const std::string& id);
+        cCacheObject<cMaterial> FindMaterial(const cTag& id);
         
-        void DestroyMaterial(const std::string& id);
+        void DestroyMaterial(const cTag& id);
         void DestroyVertexArray(cVertexArray* vertexArray);
         void DestroyGeometry(sVertexBufferGeometry* geometry);
         void DestroyRenderPass(cRenderPass* renderPass);
