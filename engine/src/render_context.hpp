@@ -7,6 +7,7 @@
 #include "../../thirdparty/glm/glm/glm.hpp"
 #include "category.hpp"
 #include "object.hpp"
+#include "math.hpp"
 #include "types.hpp"
 
 namespace triton
@@ -159,6 +160,11 @@ namespace triton
         eFactor dstFactors[8] = { eFactor::ZERO };
     };
 
+    struct sViewport
+    {
+        cVector4 rect = cVector4(0.0f);
+    };
+
     struct sRenderPassDescriptor
     {
         eCategory inputVertexFormat = eCategory::VERTEX_BUFFER_FORMAT_NONE;
@@ -173,9 +179,9 @@ namespace triton
         std::string shaderVertexFunc = "";
         std::string shaderFragmentFunc = "";
         cShader* shaderBase = nullptr;
-        sDepthMode depthMode;
-        sBlendMode blendMode;
-        glm::vec4 viewport = glm::vec4(0.0f);
+        sDepthMode depthMode = {};
+        sBlendMode blendMode = {};
+        sViewport viewport = {};
     };
 
     class cRenderPassGPU : public iObject
@@ -247,7 +253,7 @@ namespace triton
         virtual void BindDefaultInputLayout() = 0;
         virtual void BindDepthMode(const sDepthMode& blendMode) = 0;
         virtual void BindBlendMode(const sBlendMode& blendMode) = 0;
-        virtual void Viewport(const glm::vec4& viewport) = 0;
+        virtual void Viewport(const sViewport& viewport) = 0;
         virtual void ClearColor(const glm::vec4& color) = 0;
         virtual void ClearDepth(types::f32 depth) = 0;
         virtual void ClearFramebufferColor(types::usize bufferIndex, const glm::vec4& color) = 0;
@@ -306,7 +312,7 @@ namespace triton
         virtual void BindDefaultInputLayout() override final;
         virtual void BindDepthMode(const sDepthMode& blendMode) override final;
         virtual void BindBlendMode(const sBlendMode& blendMode) override final;
-        virtual void Viewport(const glm::vec4& viewport) override final;
+        virtual void Viewport(const sViewport& viewport) override final;
         virtual void ClearColor(const glm::vec4& color) override final;
         virtual void ClearDepth(types::f32 depth) override final;
         virtual void ClearFramebufferColor(types::usize bufferIndex, const glm::vec4& color) override final;

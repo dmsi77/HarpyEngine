@@ -661,7 +661,7 @@ namespace triton
 
         if (texture->GetDimension() == cTexture::eDimension::TEXTURE_2D)
         {
-            const sApplicationCapabilities* caps = _context->GetSubsystem<cEngine>()->GetApplication()->GetCapabilities();
+            const sCapabilities* caps = _context->GetSubsystem<cEngine>()->GetApplication()->GetCapabilities();
             cMemoryAllocator* memoryAllocator = _context->GetMemoryAllocator();
 
             u8* pixels = (u8*)memoryAllocator->Allocate(texture->GetWidth() * texture->GetHeight() * formatByteCount, caps->memoryAlignment);
@@ -871,13 +871,13 @@ namespace triton
             BindRenderTarget(renderPass->GetRenderPassGPU()->GetRenderTarget());
         else
             UnbindRenderTarget();
-        Viewport(renderPass->GetDesc()->viewport);
-        for (auto buffer : renderPass->GetDesc()->inputBuffers)
+        Viewport(renderPass->GetViewport());
+        for (auto buffer : renderPass->GetInputBuffers())
             BindBufferNotVAO(buffer);
-        BindDepthMode(renderPass->GetDesc()->depthMode);
-        BindBlendMode(renderPass->GetDesc()->blendMode);
-        for (usize i = 0; i < renderPass->GetDesc()->inputTextures.size(); i++)
-            BindTexture(shader, renderPass->GetDesc()->inputTextureNames[i].c_str(), renderPass->GetDesc()->inputTextures[i], i);
+        BindDepthMode(renderPass->GetDepthMode());
+        BindBlendMode(renderPass->GetBlendMode());
+        for (usize i = 0; i < renderPass->GetInputTextures().size(); i++)
+            BindTexture(shader, renderPass->GetInputTextureNames()[i].c_str(), renderPass->GetInputTextures()[i], i);
     }
 
     void cOpenGLGraphicsAPI::UnbindRenderPass(const cRenderPass* renderPass)
@@ -885,9 +885,9 @@ namespace triton
         UnbindVertexArray();
         if (renderPass->GetRenderPassGPU()->GetRenderTarget() != nullptr)
             UnbindRenderTarget();
-        for (auto buffer : renderPass->GetDesc()->inputBuffers)
+        for (auto buffer : renderPass->GetInputBuffers())
             UnbindBuffer(buffer);
-        for (auto texture : renderPass->GetDesc()->inputTextures)
+        for (auto texture : renderPass->GetInputTextures())
             UnbindTexture(texture);
     }
 
@@ -953,9 +953,9 @@ namespace triton
             glDepthMask(GL_FALSE);
     }
 
-    void cOpenGLGraphicsAPI::Viewport(const glm::vec4& viewport)
+    void cOpenGLGraphicsAPI::Viewport(const sViewport& viewport)
     {
-        glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+        glViewport(viewport.rect.GetX(), viewport.rect.GetY(), viewport.rect.GetZ(), viewport.rect.GetW());
     }
 
     void cOpenGLGraphicsAPI::ClearColor(const glm::vec4& color)
