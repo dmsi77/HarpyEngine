@@ -25,6 +25,9 @@ namespace triton
 		cCacheObject<T> Find(const std::string& id);
 		void Destroy(const std::string& id);
 
+		inline T* GetElement(types::u32 index) const { return _objects->GetElement(index); }
+		inline types::usize GetElementCount() const { return _objects->GetElementCount(); }
+
 	private:
 		cMap<T>* _objects = nullptr;
 	};
