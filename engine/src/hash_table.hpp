@@ -31,8 +31,8 @@ namespace triton
 
 		template<typename... Args>
 		T* Insert(Args&&... args);
-		T* Find(const std::string& key);
-		void Erase(const std::string& key);
+		T* Find(const types::u8* key);
+		void Erase(const types::u8* key);
 
 		inline const T* GetElement(types::u32 index) const;
 		inline types::usize GetElementCount() const { return _elementCount; }
@@ -114,7 +114,7 @@ namespace triton
 	}
 
 	template <typename T>
-	T* cHashTable<T>::Find(const std::string& key)
+	T* cHashTable<T>::Find(const types::u8* key)
 	{
 		const types::cpuword hash = Hash(key, _hashMask);
 		const sChunkElement& ce = _hashTable[hash];
@@ -140,7 +140,7 @@ namespace triton
 	}
 
 	template <typename T>
-	void cHashTable<T>::Erase(const std::string& key)
+	void cHashTable<T>::Erase(const types::u8* key)
 	{
 		for (types::usize i = 0; i < _chunkCount; i++)
 		{
