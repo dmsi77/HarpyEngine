@@ -81,7 +81,7 @@ namespace triton
     {
         cPhysics* physics = _context->GetSubsystem<cPhysics>();
         const cPhysicsController* controller = _cameraGameObject->GetPhysicsController();
-        const sTransform* transform = _cameraGameObject->GetTransform();
+        const cTransform* transform = _cameraGameObject->GetTransform();
         const cVector3& transformPosition = transform->GetPosition();
         const cVector3 position = transformPosition;
         const cVector3 newPosition = transformPosition + _direction * value;
